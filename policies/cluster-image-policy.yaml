@@ -1,0 +1,14 @@
+apiVersion: policy.sigstore.dev/v1alpha1
+kind: ClusterImagePolicy
+metadata:
+  name: image-policy
+spec:
+  images:
+    - glob: "ghcr.io/dragoncoil2609/w10-api*" # Chỉ check những image này (hoặc thay bằng ** để check tất cả)
+  authorities:
+    - key:
+        data: |
+          -----BEGIN PUBLIC KEY-----
+          MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE9rRF8EiUzqs5cUWiGHkhc/9ztryL
+          VIh4QUUxGGIlsETlB540XwnNwQaAEk5RJWfWAm60EvPkWgW4u0pLnwBpsw==
+          -----END PUBLIC KEY-----

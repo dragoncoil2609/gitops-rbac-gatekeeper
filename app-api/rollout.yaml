@@ -25,6 +25,9 @@ spec:
         runAsNonRoot: true
       containers:
       - name: api
+        securityContext:
+          runAsUser: 1000
+          runAsNonRoot: true
         image: ghcr.io/dragoncoil2609/w10-api:0.0.1
         imagePullPolicy: IfNotPresent
         ports:
@@ -51,10 +54,6 @@ spec:
             memory: 128Mi
   strategy:
     canary:
-      analysis:
-        templates:
-        - templateName: success-rate
-        startingStep: 1
       steps:
       - setWeight: 10
       - pause: {duration: 2m}

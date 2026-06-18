@@ -1,13 +1,16 @@
+# Luật 1: Cấm sử dụng image tag ':latest'
+# Tránh việc deploy các image không xác định rõ phiên bản (version pinning)
 apiVersion: constraints.gatekeeper.sh/v1beta1
-kind: K8sDisallowedTags
+kind: K8sDisallowedTags # Sử dụng ConstraintTemplate K8sDisallowedTags từ thư viện
 metadata:
   name: block-latest-tag
 spec:
   match:
     kinds:
       - apiGroups: [""]
-        kinds: ["Pod"]
+        kinds: ["Pod"] # Áp dụng luật này cho tất cả các Pod được tạo ra
+    # Ngoại trừ các namespace hệ thống để tránh làm hỏng Kubernetes và ArgoCD
     excludedNamespaces: ["kube-system", "argocd", "gatekeeper-system", "monitoring"]
   parameters:
     tags:
-      - latest
+      - latest # Danh sách các tag bị cấm (ở đây là cấm tag 'latest')

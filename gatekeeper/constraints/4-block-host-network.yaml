@@ -1,12 +1,15 @@
+# Luật 4: Cấm sử dụng hostNetwork
+# Ngăn chặn Pod chiếm dụng trực tiếp mạng của máy chủ Host, tránh rủi ro bảo mật về Network Isolation
 apiVersion: constraints.gatekeeper.sh/v1beta1
-kind: K8sPSPHostNetworkingPorts
+kind: K8sPSPHostNetworkingPorts # Sử dụng ConstraintTemplate K8sPSPHostNetworkingPorts từ thư viện
 metadata:
   name: block-host-network
 spec:
   match:
     kinds:
       - apiGroups: [""]
-        kinds: ["Pod"]
+        kinds: ["Pod"] # Áp dụng luật này cho tất cả các Pod
+    # Ngoại trừ các namespace hệ thống vì ví dụ kube-proxy cần dùng hostNetwork
     excludedNamespaces: ["kube-system", "argocd", "gatekeeper-system", "monitoring"]
   parameters:
-    hostNetwork: false
+    hostNetwork: false # Tuyệt đối cấm khai báo spec.hostNetwork = true trong cấu hình Pod

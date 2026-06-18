@@ -1,13 +1,16 @@
+# Luật 3: Cấm chạy bằng quyền Root (runAsUser: 0)
+# Bảo vệ Cluster khỏi nguy cơ leo thang đặc quyền (Privilege Escalation) nếu Container bị hack
 apiVersion: constraints.gatekeeper.sh/v1beta1
-kind: K8sPSPAllowedUsers
+kind: K8sPSPAllowedUsers # Sử dụng ConstraintTemplate K8sPSPAllowedUsers từ thư viện
 metadata:
   name: block-root-user
 spec:
   match:
     kinds:
       - apiGroups: [""]
-        kinds: ["Pod"]
+        kinds: ["Pod"] # Áp dụng luật này cho tất cả các Pod
+    # Ngoại trừ các namespace hệ thống vì một số dịch vụ hệ thống bắt buộc chạy Root
     excludedNamespaces: ["kube-system", "argocd", "gatekeeper-system", "monitoring"]
   parameters:
     runAsUser:
-      rule: MustRunAsNonRoot
+      rule: MustRunAsNonRoot # Bắt buộc phải cấu hình securityContext: runAsNonRoot: true hoặc runAsUser khác 0

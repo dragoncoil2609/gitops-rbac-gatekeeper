@@ -1,13 +1,16 @@
+# Luật 2: Bắt buộc cấu hình resources.limits
+# Đảm bảo các Pod không được phép tiêu thụ không giới hạn tài nguyên (CPU/RAM) của Cluster
 apiVersion: constraints.gatekeeper.sh/v1beta1
-kind: K8sContainerLimits
+kind: K8sContainerLimits # Sử dụng ConstraintTemplate K8sContainerLimits từ thư viện
 metadata:
   name: container-must-have-limits
 spec:
   match:
     kinds:
       - apiGroups: [""]
-        kinds: ["Pod"]
+        kinds: ["Pod"] # Áp dụng luật này cho tất cả các Pod
+    # Ngoại trừ các namespace hệ thống
     excludedNamespaces: ["kube-system", "argocd", "gatekeeper-system", "monitoring"]
   parameters:
-    cpu: "1"
-    memory: "1Gi"
+    cpu: "1"      # Giới hạn tối đa 1 CPU (Nếu Pod không khai báo limits, sẽ bị chặn)
+    memory: "1Gi" # Giới hạn tối đa 1 GiB RAM

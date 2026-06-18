@@ -1,10 +1,12 @@
 apiVersion: constraints.gatekeeper.sh/v1beta1
-kind: K8sBlockNodePort
+kind: K8sPSPHostNetworkingPorts
 metadata:
-  name: block-nodeport-services
+  name: block-host-network
 spec:
   match:
     kinds:
       - apiGroups: [""]
-        kinds: ["Service"]
+        kinds: ["Pod"]
     excludedNamespaces: ["kube-system", "argocd", "gatekeeper-system", "monitoring"]
+  parameters:
+    hostNetwork: false

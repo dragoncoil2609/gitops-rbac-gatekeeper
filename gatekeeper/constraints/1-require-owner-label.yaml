@@ -1,0 +1,14 @@
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: K8sRequiredLabels
+metadata:
+  name: require-owner-label
+spec:
+  match:
+    kinds:
+      - apiGroups: [""]
+        kinds: ["Namespace", "Pod"]
+    excludedNamespaces: ["kube-system", "argocd", "gatekeeper-system", "monitoring"]
+  parameters:
+    message: "Tất cả các tài nguyên (Pod, Namespace) phải có nhãn (label) 'owner' để dễ quản lý chi phí."
+    labels:
+      - key: owner

@@ -1,23 +1,20 @@
-# ArgoCD App: Deploy AnalysisTemplate cho canary analysis
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: analysis
+  name: rbac
   namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: "1"
 spec:
   project: default
   source:
-    repoURL: https://github.com/dragoncoil2609/gitops-rbac-gatekeeper.git
-    path: app-analysis
+    repoURL: https://github.com/dragoncoil2609/gitops-rbac-gatekeeper.git  # URL repo của bạn
+    path: rbac                                       # Đường dẫn tới thư mục rbac
     targetRevision: main
   destination:
     server: https://kubernetes.default.svc
-    namespace: demo
+    namespace: default
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
-    syncOptions:
-    - ServerSideApply=true

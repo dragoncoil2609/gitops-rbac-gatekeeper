@@ -1,0 +1,42 @@
+# 1. Gắn Role 'developer' cho user 'alice'
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: alice-developer
+  namespace: demo
+subjects:
+- kind: User
+  name: alice
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: developer
+  apiGroup: rbac.authorization.k8s.io
+---
+# 2. Gắn ClusterRole 'pod-sre' cho user 'bob'
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: bob-sre
+subjects:
+- kind: User
+  name: bob
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: ClusterRole
+  name: pod-sre
+  apiGroup: rbac.authorization.k8s.io
+---
+# 3. Gắn ClusterRole 'global-viewer' cho user 'carol'
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: carol-viewer
+subjects:
+- kind: User
+  name: carol
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: ClusterRole
+  name: global-viewer
+  apiGroup: rbac.authorization.k8s.io
